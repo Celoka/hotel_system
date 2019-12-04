@@ -1,0 +1,9 @@
+[run]
+omit =
+    */settings/*
+    */migrations/*
+    */wsgi.py
+    */venv/*
+    */.vscode/*
+    */__init__.py
+    manage.py

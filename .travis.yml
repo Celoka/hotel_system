@@ -1,0 +1,24 @@
+language: python
+python:
+  - "3.6.5"
+
+services:
+  - postgresql
+
+env:
+  - DJANGO=3.0
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=hotel_api.settings.testing
+  - export PYTHONPATH=$HOME/builds/Celoka/hotel_system
+
+install:
+  - pip install -r requirements.txt
+  - pip install psycopg2 --quiet
+
+before_script:
+  - psql -c "CREATE DATABASE hotel_system_test;" -U postgres
+
+script:
+  - sh ./build.sh
+  - coveralls

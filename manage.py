@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-if os.environ['ENV'] in ['PRODUCTION']:
+if os.environ['ENV'].lower() == 'production':
     setting = 'hotel_api.settings.production'
 else:
     setting = 'hotel_api.settings.development'

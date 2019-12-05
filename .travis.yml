@@ -19,4 +19,7 @@ before_script:
   - psql -c "CREATE DATABASE hotel_system_test;" -U postgres
 
 script:
-  - sh ./build.sh
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - coverage run --source='.' manage.py test
+  - coverage report

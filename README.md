@@ -47,8 +47,9 @@ deactivate
 - To start the application, in the root directory of the project, run:
 ```
 python manage.py runserver
-``
+```
 - To run test:
+
 ```
 python manage.py test
 ```
@@ -68,7 +69,8 @@ coverage report
 - Upload Passport Photo
 
 ## API Documentation
--
+Link to API documentation:
+https://documenter.getpostman.com/view/2103043/SWE6Zxrm?version=latest
 
 ## Built With
 - Python 3

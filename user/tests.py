@@ -76,7 +76,9 @@ class RegisterUserTest(TestCase):
         self.bad_format_details = {
             "username": "West",
             "firstName": "John",
-            "password": "2"
+            "lastName": "John",
+            "email": "west.email.com",
+            "password": "w"
         }
 
     def test_register_a_user(self):
@@ -88,28 +90,6 @@ class RegisterUserTest(TestCase):
         self.assertEqual(response.data["last_name"],"John")
         self.assertEqual(response.data["email"],"west.john@email.com")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-    def test_invalid_user_password(self):
-        url = reverse("auth-register",kwargs={"version": "v1"})
-        response = client.post(url, data=json.dumps(self.bad_format_details),
-                               content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data[0], 'Password contain a lowercase, an uppercase, a number & a special character and should be atleast 8 characters long')
-
-    def test_valid_user_name(self):
-        url = reverse("auth-register",kwargs={"version": "v1"})
-        invalid_credentials = {
-            "username": "99#=",
-            "firstName": "West",
-            "lastName": "John",
-            "email": "west.john@email.com",
-            "password": "Wetdgfj$1"
-        }
-        response = client.post(url, data=json.dumps(invalid_credentials),
-                               content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data[0], 'Username can only contain alphanumeric characters and . or _.')
-
 
 class LoginUSerTest(BaseViewTest):
 
@@ -141,7 +121,7 @@ class LoginUSerTest(BaseViewTest):
 
     def test_user_login_with_invalid_credentials(self):
         invalid_credentials = dict(
-            username='',
+            username='e',
             password='Wetdgfj$1'
         )
         url = reverse("auth-login",kwargs={"version": "v1"})
@@ -150,7 +130,7 @@ class LoginUSerTest(BaseViewTest):
             data=json.dumps(invalid_credentials),
             content_type="application/json"
         )
-        self.assertEqual(response.data[0], "Enter a valid login credential")
+        self.assertEqual(response.data['message'], "User does not exist")
 
     def test_user_login_with_wrong_credential(self):
         wrong_credentials = dict(

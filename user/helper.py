@@ -11,9 +11,7 @@ def validate_username(username):
     """
     if re.search(r'([^a-zA-Z/.\d+])', username) is None:
         return username
-    raise serializers.ValidationError(
-        'Username can only contain alphanumeric characters and . or _.'
-)
+    return False 
 
 def validate_password(password):
     """
@@ -21,9 +19,7 @@ def validate_password(password):
     """
     if re.search(r'(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$_!%*?&]{8,}$)', password) is not None:
         return password
-    raise serializers.ValidationError(
-        'Password contain a lowercase, an uppercase, a number & a special character and should be atleast 8 characters long'
-)
+    return False
 
 def check_if_exist(email, username):
     """
@@ -31,7 +27,7 @@ def check_if_exist(email, username):
     """
     if User.objects.filter(email=email).exists()\
         or User.objects.filter(username=username).exists():
-        raise serializers.ValidationError('Username or Email already exists')
+        return False
 
 def validate_login_input(request, validated_data):
     """
@@ -41,5 +37,4 @@ def validate_login_input(request, validated_data):
     password = validated_data.get('password')
     if username and password:
         return authenticate(request, username=username, password=password)
-    message = "Enter a valid login credential"
-    raise serializers.ValidationError(message)
+    return False
